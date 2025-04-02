@@ -7,8 +7,7 @@ public class SceneTransitor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // менорхлюкэмн
-        if (other.gameObject.GetComponent<Player>() != null)
+        if (other.CompareTag("Player"))
         {
             SceneManager.LoadScene(scene);
         }

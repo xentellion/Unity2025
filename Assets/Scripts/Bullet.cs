@@ -18,12 +18,10 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // менорхлюкэмн
-        var bullet = collision.gameObject.GetComponent<Bullet>();
-        if (bullet == null)
+        if (collision.gameObject.CompareTag("Destructable"))
         {
-            Destroy(gameObject);
-            Debug.Log("Bullet destroyed");
+            Destroy(collision.gameObject);
         }
+        Destroy(gameObject);
     }
 }
