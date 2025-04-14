@@ -16,6 +16,8 @@ public class Gun : MonoBehaviour
 
     private bool _autoFire = false;
     private bool _onCoolDown = false;
+
+    private int _bulletCount = 0;
      
 
     private void Start()
@@ -42,25 +44,18 @@ public class Gun : MonoBehaviour
         }
         else
         {
-            if (context.started) 
-            { 
-                _autoFire = true;
-            }
-            else if (context.canceled)
-            {
-                _autoFire = false;
-            }
+            _autoFire = !context.canceled;
         }
     }
 
     IEnumerator ShootBullet()
     {
+        _bulletCount++;
+        ShowBullet.OnAmmoChange.Invoke(_bulletCount);
+        _onCoolDown = true;
         if (!_hitscan)
         {
-            Instantiate(_bullet, _muzzle.position, transform.parent.rotation);
-            _onCoolDown = true;
-            yield return new WaitForSeconds(0.5f);
-            _onCoolDown = false;
+            Instantiate(_bullet, _muzzle.position, transform.parent.rotation); 
         }
         else
         {
@@ -70,5 +65,7 @@ public class Gun : MonoBehaviour
                 Destroy(hit.transform.gameObject);
             }
         }
+        yield return new WaitForSeconds(0.5f);
+        _onCoolDown = false;
     }
 }
